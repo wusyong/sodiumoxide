@@ -219,7 +219,7 @@ fn build_libsodium() {
     use tar::Archive;
 
     // Determine build target triple
-    let target = env::var("TARGET").unwrap();
+    let mut target = env::var("TARGET").unwrap();
 
     // Determine filenames
     let basename = format!("libsodium-{}", VERSION);
@@ -330,8 +330,10 @@ fn build_libsodium() {
         }
         cross_compiling = true;
         help = "";
-    } else {
-        if target.contains("i686") {
+    } else { 
+        if target == "x86_64-pc-windows-msvc" || target == "x86_64-pc-windows-gnu" {
+            target = "x86_64-windows".to_string();
+        } else if target.contains("i686") {
             compiler += " -m32 -maes";
             cflags += " -march=i686";
         }
