@@ -229,10 +229,10 @@ fn make_libsodium(target: &str, source_dir: &Path, install_dir: &Path) -> PathBu
         help = "";
     } else if target == "thumbv7em-none-eabihf" {
         host_arg = "--host=arm-none-eabi".to_string();
-        cflags += " -mthumb";
-        cflags += " -mcpu=cortex-m4";
+        cflags += " -mthumb -mcpu=cortex-m4 -no-pie -static";
         cflags += " -mfloat-abi=hard -mfpu=fpv4-sp-d16";
         cflags += " --specs=nosys.specs";
+        cflags += " -fno-builtin -ffunction-sections -fdata-sections -fomit-frame-pointer";
         cross_compiling = true;
         help = "";
 
@@ -265,6 +265,7 @@ fn make_libsodium(target: &str, source_dir: &Path, install_dir: &Path) -> PathBu
     }
     if env::var("SODIUM_DISABLE_PIE").is_ok() {
         configure_cmd.arg("--disable-pie");
+        configure_cmd.arg("--with-pic=no");
     }
     let configure_output = configure_cmd
         .current_dir(&source_dir)
