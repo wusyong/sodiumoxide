@@ -230,6 +230,8 @@ fn make_libsodium(target: &str, source_dir: &Path, install_dir: &Path) -> PathBu
     } else if target == "thumbv7em-none-eabihf" {
         host_arg = "--host=arm-none-eabi".to_string();
         cflags += " -mthumb";
+        cflags += " -mcpu=cortex-m4";
+        cflags += " -mfloat-abi=hard -mfpu=fpv4-sp-d16";
         cflags += " --specs=nosys.specs";
         cross_compiling = true;
         help = "";
