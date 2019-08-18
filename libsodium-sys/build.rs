@@ -227,11 +227,18 @@ fn make_libsodium(target: &str, source_dir: &Path, install_dir: &Path) -> PathBu
         }
         cross_compiling = true;
         help = "";
+    } else if target == "thumbv7em-none-eabihf" {
+        host_arg = "--host=arm-none-eabi".to_string();
+        cflags += " -mthumb";
+        cflags += " --specs=nosys.specs";
+        cross_compiling = true;
+        help = "";
+
     } else {
         if target.contains("i686") {
             compiler += " -m32 -maes";
             cflags += " -march=i686";
-        }
+        } 
         let host = env::var("HOST").unwrap();
         host_arg = format!("--host={}", target);
         cross_compiling = target != host;

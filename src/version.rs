@@ -10,10 +10,21 @@ pub fn version_string() -> &'static str {
     // Use libc directly because CStr isn't available with #![no_std] :(
     let version = unsafe {
         let version_ptr = ffi::sodium_version_string();
-        let version_len = libc::strlen(version_ptr);
+        let version_len = strlen(version_ptr);
         slice::from_raw_parts(version_ptr as *const u8, version_len as usize)
     };
     str::from_utf8(version).unwrap()
+}
+
+unsafe fn strlen(d: *const u8) -> usize {
+    let mut d = d;
+    let mut c = 0;
+
+    while *d.offset(c) as char != '\0' {
+        c += 1;
+    }
+
+    c as usize
 }
 
 /// `version_major()` returns the major version from libsodium.

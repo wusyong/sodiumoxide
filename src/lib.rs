@@ -57,14 +57,16 @@
 #![warn(non_camel_case_types)]
 #![warn(unused_qualifications)]
 #![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(not(feature = "std"), feature(alloc))]
 #![deny(clippy::all)]
 
 extern crate libsodium_sys as ffi;
 
 #[cfg(test)]
 extern crate hex;
-extern crate libc;
+
+//extern crate libc;
+extern crate cty as libc;
+
 #[cfg(any(test, feature = "serde"))]
 extern crate serde;
 #[cfg(not(feature = "std"))]

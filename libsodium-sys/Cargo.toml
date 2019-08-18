@@ -28,6 +28,7 @@ cc = "1.0"
 
 [dependencies]
 libc = { version = "0.2" , default-features = false }
+cty = "0.2.0"
 
 [lib]
 name = "libsodium_sys"
